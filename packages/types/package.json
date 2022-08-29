@@ -1,0 +1,16 @@
+{
+  "name": "types",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.ts",
+  "files": [
+    "user.ts",
+    "index.d.ts",
+    "auth-types.d.ts",
+    "school-types.d.ts",
+    "server-types.d.ts"
+  ],
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
+}

@@ -1,0 +1,117 @@
+@hostname = localhost
+@port_auth = 3001
+@port_api = 3002
+@url_auth = http://{{hostname}}:{{port_auth}}/api/auth
+@url_api = http://{{hostname}}:{{port_api}}/v1/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NywiVVNFUk5BTUUiOiJEYW5pZWxNYWh5YXIiLCJST0xFIjoiVEVBQ0hFUiIsIlBIT1RPX1VSTCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMi92MS9hc3NldHMvZGVmYXVsdC5qcGciLCJQVUJMSUNfTkFNRSI6IkRhbmllbCBDYXJnYXIgTWFoeWFyIiwiaWF0IjoxNjU5ODMyODUyLCJleHAiOjE2NjAwMDU2NTJ9.ZVoqasf74hK8uFN3_lAFDx-_LPZNbznBb4Qvt02q8ws
+@refresh_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NywiVVNFUk5BTUUiOiJEYW5pZWxNYWh5YXIiLCJST0xFIjoiVEVBQ0hFUiIsImlhdCI6MTY1OTEwNzAyMH0.fAfleUNQ6QNIb7xOO5dTRNBwhtIpioJkVh5HIkqhlEw
+
+### Authentication login for teacher
+POST {{url_auth}}/login/teacher
+Content-Type: application/json
+
+{
+  "username": "DanielMahyar",
+  "password": "DanielCargarMahyar"
+}
+
+### Get new access token
+POST {{url_auth}}/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refresh_token}}",
+  "user": {
+    "ID": 7,
+    "USERNAME": "DanielMahyar",
+    "ROLE": "TEACHER"
+  }
+}
+
+### Logout for teacher
+DELETE {{url_auth}}/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refresh_token}}"
+}
+
+### Get all students from one class
+GET {{url_api}}/teachers/classes/1
+Authorization: Bearer {{token}}
+
+
+### Make assignment for class (from teacher)
+POST {{url_api}}/teachers/classes/1/assignments
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "ASSIGNMENT_NAME": "Analysis",
+    "ASSIGNMENT_DESCRIPTION": "Assignment 1 description",
+    "ASSIGNMENT_DEADLINE": "2022-07-25 18:59:22",
+    "ASSIGNMENT_FILE": "https://www.google.com/",
+    "ASSIGNMENT_SUBJECT": "Danish",
+    "ASSIGNMENT_GRADE_TYPE": "7_TRINS_SKALA"
+}
+
+### Delete assignment for class (from teacher)
+DELETE {{url_api}}/teachers/classes/assignments/17
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Edit a class assignment (from teacher)
+PATCH {{url_api}}/teachers/classes/1/assignments/18
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "ASSIGNMENT_NAME": "ADDDDDD",
+  "ASSIGNMENT_DESCRIPTION": "Assignment 1 description",
+  "ASSIGNMENT_DEADLINE": "2022-07-25 23:59:22",
+  "ASSIGNMENT_FILE": "https://www.google.com/",
+  "ASSIGNMENT_SUBJECT": "Math",
+  "ASSIGNMENT_GRADE_TYPE": "Percentage"
+}
+
+### Get all assignments for class (from one specfic teacher queried or defaults to teacher who sends request)
+GET {{url_api}}/teachers/classes/1/assignments
+Authorization: Bearer {{token}}
+
+
+### Get sumbitted work for each student in class (from teacher)
+GET {{url_api}}/teachers/classes/1/assignments/20/work
+Authorization: Bearer {{token}}
+
+### Get files from specific work
+GET {{url_api}}/teachers/classes/1/assignments/20/work/53
+Authorization: Bearer {{token}}
+
+### Grade a single student (from teacher)
+PUT {{url_api}}/teachers/classes/1/assignments/14/student/39
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "grade": "10"
+}
+
+
+### Get specfic information from student (as teacher)
+GET {{url_api}}/teachers/info/students/53
+Content-Type: application/json
+Authorization: Bearer {{token}}
+    
+{
+    "assignmentID": 13
+}
+
+### Teacher getting own information
+GET {{url_api}}/teachers/info/me
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### 
+
+GET https://schoolsystem-application.herokuapp.com/v1/assets/default.jpg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NjEsIlVTRVJOQU1FIjoiRGFuaWVsX1BlZGVyc2VuIiwiUk9MRSI6IlNUVURFTlQiLCJQSE9UT19VUkwiOiJodHRwczovL3NjaG9vbHN5c3RlbS1hcHBsaWNhdGlvbi5oZXJva3VhcHAuY29tL3YxL2Fzc2V0cy9kZWZhdWx0LmpwZyIsIlBVQkxJQ19OQU1FIjoiRGFuaWVsIENhcmdhciBNYWh5YXIiLCJpYXQiOjE2NjE3MDk2NTUsImV4cCI6MTY2MTcxNjg1NX0.OKJcqwx7GDvHBC1zP4bCKp1EqpIvyjhNzRJU-LPkK8s

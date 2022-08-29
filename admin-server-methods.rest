@@ -1,0 +1,50 @@
+@hostname = localhost
+@port_auth = 3001
+@port_api = 3002
+@url_auth = http://{{hostname}}:{{port_auth}}/api/auth
+@url_api = http://{{hostname}}:{{port_api}}/v1/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6MSwiVVNFUk5BTUUiOiJEYW5pZWwiLCJST0xFIjoiQURNSU4iLCJQSE9UT19VUkwiOiJodHRwOi8vbG9jYWxob3N0OjMwMDIvdjEvYXNzZXRzL2RlZmF1bHQuanBnIiwiUFVCTElDX05BTUUiOiJEYW5pZWwgQ2FyZ2FyIE1haHlhciIsImlhdCI6MTY1OTc4NzIyMCwiZXhwIjoxNjU5OTYwMDIwfQ.w6E0T0uDiHRx4Vy09gd48HZrrs2hPG6kjVU6q-xe50M
+@refresh_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6MzksIlVTRVJOQU1FIjoiRGFuaWVsIiwiUk9MRSI6IlNUVURFTlQiLCJpYXQiOjE2NTg4NzUwMjd9.3yfzgOCeskVor8So1qtXeaRdL1Fd6g9baYopv7M8MNQ
+
+
+POST {{url_auth}}/login/admin
+Content-Type: application/json
+
+{
+  "username": "Daniel",
+  "password": "test"
+}
+
+###
+
+POST {{url_auth}}/create/student
+Content-Type: application/json
+    
+{
+    "username": "John Doe",
+    "password": "test"
+}
+
+###
+
+POST {{url_auth}}/create/teacher
+Content-Type: application/json
+    
+{
+    "username": "John Doe",
+    "password": "test"
+}
+
+###
+
+POST {{url_auth}}/create/admin
+Content-Type: application/json
+
+{
+    "username": "Daniel",
+    "password": "test"
+}
+
+###
+GET {{url_api}}/students/assignments/files/class-1/55-43-nameoffile.txt
+Authorization: Bearer {{token}}

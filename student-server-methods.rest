@@ -1,0 +1,55 @@
+@hostname = localhost
+@port_auth = 3001
+@port_api = 3002
+@url_auth = http://{{hostname}}:{{port_auth}}/api/auth
+@url_api = http://{{hostname}}:{{port_api}}/v1/api/students
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NTIsIlVTRVJOQU1FIjoiSm9obiBEb2UiLCJST0xFIjoiU1RVREVOVCIsIlBIT1RPX1VSTCI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMi92MS9hc3NldHMvZGVmYXVsdC5qcGciLCJQVUJMSUNfTkFNRSI6IkpvaG4gRG9lIiwiaWF0IjoxNjYxNjExNzUzLCJleHAiOjE2NjE2MTE3NTh9.alGQK7oimqViW7sjkxaKWiZl9W-faIPPgehrwew8EDM 
+@refresh_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6MzksIlVTRVJOQU1FIjoiRGFuaWVsIiwiUk9MRSI6IlNUVURFTlQiLCJpYXQiOjE2NTkyMTY4MDV9.yOHfYF2gL5xlyHxN2xzFtPrcLLskx3wI1jP9GJaK76Q
+
+### Student login
+POST https://schoolsystem-auth-server.herokuapp.com/api/auth/login/student
+Content-Type: application/json
+
+{
+  "username": "John Doe",
+  "password": "test"
+}
+
+### See all assigments (type=NOT_DONE)
+GET https://schoolsystem-application.herokuapp.com/v1/api/students/assignments
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NjEsIlVTRVJOQU1FIjoiRGFuaWVsX1BlZGVyc2VuIiwiUk9MRSI6IlNUVURFTlQiLCJQSE9UT19VUkwiOiJodHRwczovL3NjaG9vbHN5c3RlbS1hcHBsaWNhdGlvbi5oZXJva3VhcHAuY29tL3YxL2Fzc2V0cy9kZWZhdWx0LmpwZyIsIlBVQkxJQ19OQU1FIjoiRGFuaWVsIENhcmdhciBNYWh5YXIiLCJpYXQiOjE2NjE3MTAwMjYsImV4cCI6MTY2MTcxNzIyNn0.8CssTiUYRGxZwwDv9Z9-gJbFW3Ht9el7H1xvESL_cHE
+
+### See one specific assignment
+GET https://schoolsystem-application.herokuapp.com/v1/api/students/assignments/20
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NjEsIlVTRVJOQU1FIjoiRGFuaWVsX1BlZGVyc2VuIiwiUk9MRSI6IlNUVURFTlQiLCJQSE9UT19VUkwiOiJodHRwczovL3NjaG9vbHN5c3RlbS1hcHBsaWNhdGlvbi5oZXJva3VhcHAuY29tL3YxL2Fzc2V0cy9kZWZhdWx0LmpwZyIsIlBVQkxJQ19OQU1FIjoiRGFuaWVsIENhcmdhciBNYWh5YXIiLCJpYXQiOjE2NjE3MTAwMjYsImV4cCI6MTY2MTcxNzIyNn0.8CssTiUYRGxZwwDv9Z9-gJbFW3Ht9el7H1xvESL_cHE
+
+{
+  "studentTaskID": 1
+}
+
+### Upload work to assignment
+PATCH {{url_api}}/assignments/18
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "submittedWork": "This is my work"
+}
+
+
+### Submit work
+PATCH {{url_api}}/assignments/14/submit
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+{
+  "studentTaskID": 1 
+}
+
+### See own information
+GET {{url_api}}/info/me
+Authorization: Bearer {{token}}
+
+### Test for static files
+GET http://localhost:3002/v1/assets/default.jpg

@@ -1,0 +1,301 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Authentication system for School Application",
+    "description": "Documentation for the Authentication system for School Application",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/api/auth",
+      "description": "Authentication Server"
+    },
+    {
+      "url": "http://localhost:3002/v1/api",
+      "description": "School Application Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "API for users in system"
+    }
+  ],
+  "paths": {
+    "/login/teacher": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Generates Accesstoken and stores refreshtoken in database",
+        "requestBody": {
+          "description": "Teacher AccessToken and RefreshToken",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/LoginInfo"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Accesstoken"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/login/student": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Generates Accesstoken and stores refreshtoken in database",
+        "requestBody": {
+          "description": "Student AccessToken and RefreshToken",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/LoginInfo"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Accesstoken"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/refresh": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Generates new Accesstoken with given RefreshToken",
+        "requestBody": {
+          "description": "RefreshToken",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/RefreshToken"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Accesstoken"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/cats/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of the cat that we want to match",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Cats"],
+        "summary": "Get cat with given ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Cat with id",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Cat"
+            }
+          },
+          "404": {
+            "description": "Failed. Cat not found."
+          }
+        }
+      },
+      "put": {
+        "summary": "Update cat with given ID",
+        "tags": ["Cats"],
+        "requestBody": {
+          "description": "Cat Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Cat"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Cat with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Cat"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          },
+          "404": {
+            "description": "Failed. Cat not found."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete cat with given ID",
+        "tags": ["Cats"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Delete Cat with id",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          },
+          "404": {
+            "description": "Failed. Cat not found."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "LoginInfo": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Username of the user"
+        },
+        "password": {
+          "type": "string",
+          "description": "Password of the user"
+        }
+      }
+    },
+    "Accesstoken": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string",
+          "description": "AccessToken of the user"
+        },
+        "refreshToken": {
+          "type": "string",
+          "description": "RefreshToken of the user"
+        }
+      }
+    },
+    "RefreshToken": {
+      "type": "object",
+      "properties": {
+        "refreshToken": {
+          "type": "string",
+          "description": "RefreshToken of the user"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Error message"
+        },
+        "server_error": {
+          "type": "string",
+          "description": "Error message from server"
+        }
+      }
+    },
+    "Cat": {
+      "type": "object",
+      "properties": {
+        "genus": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "isHungry": {
+          "type": "boolean"
+        },
+        "lastFedDate": {
+          "type": "string"
+        }
+      }
+    },
+    "Cats": {
+      "type": "object",
+      "properties": {
+        "cats": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Cat"
+          }
+        }
+      }
+    }
+  }
+}
